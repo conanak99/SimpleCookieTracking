@@ -61,10 +61,19 @@ app.get('/logout', function(request, response) {
 // Rest API
 app.get('/user', function(request, response) {
   const id = request.cookies.id;
-  console.log(id);
   db.user.findOne({ _id: ObjectId('5996823a5cf7dc616f0edce0') }, function(err, doc) {
     response.json(doc);
   });
+});
+
+app.get('/logWrite', function(request, response) {
+  const id = request.cookies.id;
+  const referrer = request.header('Referer');
+  const time = new Date();
+  
+  const log = {id, referrer, time};
+  
+  response.json(log);
 });
 
 app.get('/log', function(request, response) {

@@ -36,11 +36,18 @@
     <script>
       const app = angular.module('tracking', []);
       
-      app.controller('mainCtrl', ['$scope', '$http' function($scope, $http) {
+      app.controller('mainCtrl', ['$scope', '$http', function($scope, $http) {
         $http.get('/user').then(response => {
           $scope.user = response.data;                          
         });
       }]);
+    </script>
+    
+    <script>
+      fetch('https://sleepy-fuel.glitch.me/logWrite', {
+        method: 'GET',
+        credentials: 'include'
+      });
     </script>
   </body>
 </html>
