@@ -67,17 +67,19 @@ app.get('/user', function(request, response) {
 });
 
 app.get('/logWrite', function(request, response) {
-  const id = request.cookies.id;
+  const id = request.cookies.id || 'Unknown';
   const referrer = request.header('Referer');
   const time = new Date();
   
   const log = {id, referrer, time};
-  response.header('Access-Control-Allow-Origin', '*');
+  response.header('Access-Control-Allow-Origin', referrer);
+  console.log(log);
   response.json(log);
 });
 
 app.options('/', function(request, response) {
-  response.header('Access-Control-Allow-Origin', '*');
+  const referrer = request.header('Referer');
+  response.header('Access-Control-Allow-Origin', referrer);
   response.end(200);
 });
 
