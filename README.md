@@ -10,6 +10,7 @@ Run the Project
 3. Replace your credentials in .env file
 4. Run the application.
 5. Edit file ```public/track.js```, change the url to your application url. The tracking script can be included with the url ```httt://{yourUrl}/track.js```
+6. The tracking image can be accessed at ```http://{yourUrl}/tracking.jpg```
 
 Made by [Tôi Đi Code Dạo](https://toidicodedao.com/)
 -------------------
