@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 
-// http://expressjs.com/en/starter/basic-routing.html
+// Routing and cookies
 app.get("/", function (request, response) {
   if (!request.cookies.id) {
     const randomId = idGenerator.getRandomId();
@@ -39,14 +39,14 @@ app.get('/logout', function(request, response) {
   response.redirect('/');
 });
 
-// Rest API
-app.get('/user', function(request, response) {
-  const id = request.cookies.id;
-  db.user.findOne({ _id: ObjectId('5996823a5cf7dc616f0edce0') }, function(err, doc) {
-    response.json(doc);
+app.get('/log', function(request, response) {
+  const userId = request.cookies.id;
+  db.log.find({ userId }).sort( {time: -1} , (err, docs) => {
+    response.json({ id: userId, logs: docs });
   });
 });
 
+// Tracking API
 app.get('/logWrite', function(request, response) {
   const userId = request.cookies.id || 'Unknown';
   const referrer = request.header('Referer').replace(/\/$/, "");;
@@ -63,10 +63,18 @@ app.get('/logWrite', function(request, response) {
   });
 });
 
-app.get('/log', function(request, response) {
-  const userId = request.cookies.id;
-  db.log.find({ userId }).sort( {time: -1} , (err, docs) => {
-    response.json({ id: userId, logs: docs });
+app.get('/tracking.jpg', function(request, response) {
+  const userId = request.cookies.id || 'Unknown';
+  const referrer = (request.header('Referer') || 'Empty').replace(/\/$/, "");;
+  const time = new Date();
+  
+  const log = {userId, referrer, time};
+    
+  db.log.insert(log, (err, result) => {    
+    response.header('Access-Control-Allow-Origin', referrer);
+    response.header('Access-Control-Allow-Credentials', 'true');
+    
+    response.sendFile(__dirname + '/public/track.jpg');
   });
 });
 
