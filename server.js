@@ -9,7 +9,9 @@ var cookieParser = require('cookie-parser'); // the session is stored in a cooki
 var mongojs = require('mongojs');
 
 var ObjectId = mongojs.ObjectId;
-var db = mongojs('mongodb://hoang:123456@ds145183.mlab.com:45183/tracking', ['user', 'log']);
+const {USERNAME, PASSWORD, DBHOST, DBPORT, DATABASE} = process.env;
+
+var db = mongojs(`mongodb://${USERNAME}:${PASSWORD}@${DBHOST}:{DBPORT}/{DATABASE}`, ['user', 'log']);
 
 var app = express();
 app.use(cookieParser());
