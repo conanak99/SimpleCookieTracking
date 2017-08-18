@@ -7,6 +7,8 @@ var bodyParser = require('body-parser'); // for reading POSTed form data into `r
 var expressSession = require('express-session');
 var cookieParser = require('cookie-parser'); // the session is stored in a cookie, so we use this to parse it
 var mongojs = require('mongojs');
+
+var ObjectId = mongojs.ObjectId;
 var db = mongojs('mongodb://hoang:123456@ds145183.mlab.com:45183/tracking', ['user', 'log']);
 
 var app = express();
@@ -23,20 +25,25 @@ app.get("/", function (request, response) {
 });
 
 app.post("/login", function(request, response) {
-  console.log(request.body);
   const username = request.body.username;
   const password = request.body.password;
-  response.sendFile(__dirname + '/views/logined.html');
+  
+  db.user.findOne({ username, password }, function(err, result) {
+    if (result) {
+      response.cookie('id', result._id, { maxAge: 30*24*3600*100 } );
+      response.redirect('/home');
+    }
+    
+    response.redirect('/');
+  });
 });
 
 app.post("/register", function(request, response) {
   console.log(request.body);
   const username = request.body.username;
   const password = request.body.password;
-  db.user.insert({username, password}, (err, result) => {
-    console.log(result);      
-    const _id = result._id;
-    response.cookie('id', _id, { maxAge: 30*24*3600*100 } );
+  db.user.insert({username, password}, (err, result) => {    
+    response.cookie('id', result._id, { maxAge: 30*24*3600*100 } );
     response.redirect('/home');
   });
 });
@@ -51,10 +58,11 @@ app.get('/logout', function(request, response) {
   response.redirect('/');
 });
 
+// Rest API
 app.get('/user', function(request, response) {
   const id = request.cookies.id;
   console.log(id);
-  db.mycollection.findOne({ _id: mongojs.ObjectId(id) }, function(err, doc) {
+  db.user.findOne({ _id: ObjectId('5996823a5cf7dc616f0edce0') }, function(err, doc) {
     response.json(doc);
   });
 });
@@ -62,7 +70,6 @@ app.get('/user', function(request, response) {
 app.get('/log', function(request, response) {
   
 });
-
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
