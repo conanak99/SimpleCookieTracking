@@ -3,10 +3,14 @@
 
 // init project
 var express = require('express');
-var app = express();
+var bodyParser = require('body-parser'); // for reading POSTed form data into `req.body`
+var expressSession = require('express-session');
+var cookieParser = require('cookie-parser'); // the session is stored in a cookie, so we use this to parse it
 
-// we've started you off with Express, 
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
+var app = express();
+app.use(cookieParser());
+app.use(expressSession({secret:'somesecrettokenhere'}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
