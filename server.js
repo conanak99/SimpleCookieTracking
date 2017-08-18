@@ -73,7 +73,6 @@ app.get('/tracking.jpg', function(request, response) {
   db.log.insert(log, (err, result) => {    
     response.header('Access-Control-Allow-Origin', referrer);
     response.header('Access-Control-Allow-Credentials', 'true');
-    
     response.sendFile(__dirname + '/public/track.jpg');
   });
 });
