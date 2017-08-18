@@ -7,7 +7,7 @@ var bodyParser = require('body-parser'); // for reading POSTed form data into `r
 var expressSession = require('express-session');
 var cookieParser = require('cookie-parser'); // the session is stored in a cookie, so we use this to parse it
 var mongojs = require('mongojs');
-//var db = mongojs(connectionString, [collections]);
+var db = mongojs('mongodb://hoang:123456@ds145183.mlab.com:45183/tracking', ['user', 'log']);
 
 var app = express();
 app.use(cookieParser());
@@ -21,22 +21,24 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/dreams", function (request, response) {
-  response.send(dreams);
+app.post("/login", function(request, response) {
+  console.log(request.body);
+  const username = request.body.username;
+  const password = request.body.password;
+  response.sendFile(__dirname + '/views/logined.html');
 });
 
-// could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
-app.post("/dreams", function (request, response) {
-  dreams.push(request.query.dream);
-  response.sendStatus(200);
+app.post("/register", function(request, response) {
+  console.log(request.body);
+  const username = request.body.username;
+  const password = request.body.password;
+  db.user.insert({username, password}, (err, result) => {
+    console.log(result);      
+    const _id = result.id;
+    response.cookie('id', _id, { maxAge: 30*24*3600*100 } );
+    response.sendFile(__dirname + '/views/logined.html');
+  });
 });
-
-// Simple in-memory store for now
-var dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
