@@ -72,8 +72,13 @@ app.get('/logWrite', function(request, response) {
   const time = new Date();
   
   const log = {id, referrer, time};
-  
+  response.header('Access-Control-Allow-Origin', '*');
   response.json(log);
+});
+
+app.options('/', function(request, response) {
+  response.header('Access-Control-Allow-Origin', '*');
+  response.end(200);
 });
 
 app.get('/log', function(request, response) {
