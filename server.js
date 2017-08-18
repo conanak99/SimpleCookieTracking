@@ -23,23 +23,15 @@ app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
-  if (request.cookies.id) response.redirect('/home');
+  
+  
+  if (!request.cookies.id) {
+    response.cookie('id', result._id, { maxAge: 30*24*3600*100 } );
+    response.redirect('/home');
+  }
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.post("/login", function(request, response) {
-  const username = request.body.username;
-  const password = request.body.password;
-  
-  db.user.findOne({ username, password }, function(err, result) {
-    if (result) {
-      response.cookie('id', result._id, { maxAge: 30*24*3600*100 } );
-      response.redirect('/home');
-    }
-    
-    response.redirect('/');
-  });
-});
 
 app.post("/register", function(request, response) {
   console.log(request.body);
