@@ -67,24 +67,29 @@ app.get('/user', function(request, response) {
 });
 
 app.get('/logWrite', function(request, response) {
-  const id = request.cookies.id || 'Unknown';
-  const referrer = request.header('Referer');
+  const userId = request.cookies.id || 'Unknown';
+  const referrer = request.header('Referer').replace(/\/$/, "");;
   const time = new Date();
   
-  const log = {id, referrer, time};
-  response.header('Access-Control-Allow-Origin', referrer);
-  console.log(log);
-  response.json(log);
-});
+  const log = {userId, referrer, time};
+    
+  db.log.insert(log, (err, result) => {    
+    console.log(result);
+    response.header('Access-Control-Allow-Origin', referrer);
+    response.header('Access-Control-Allow-Credentials', 'true');
+    response.json(result);
+  });
+  
 
-app.options('/', function(request, response) {
-  const referrer = request.header('Referer');
-  response.header('Access-Control-Allow-Origin', referrer);
-  response.end(200);
 });
 
 app.get('/log', function(request, response) {
-  
+  const userId = request.cookies.id
+  db.log.find({ userId }).sort( {time: -1} , (err, docs) => {
+    console.log(docs);
+    
+    response.json(docs);
+  })
 });
 
 // listen for requests :)

@@ -14,12 +14,28 @@
     <div class="ui container basic segment">
     <header>
       <h1>
-        Hello, thí chủ {{user.username}}. Phía dưới là log của thí chủ.
+        Hello, thí chủ {{user.username}}.
       </h1>
     </header>
 
     <main class="ui segment">
-      
+      <h1>
+        Đây là log của thí chủ
+        <table class="ui single line table">
+  <thead>
+    <tr>
+      <th>Site</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="log in logs">
+      <td>{{log.referrer}}</td>
+      <td>{{log.time}}</td>
+    </tr>
+  </tbody>
+</table>
+      </h1>
       
       
     </main>
@@ -39,6 +55,10 @@
       app.controller('mainCtrl', ['$scope', '$http', function($scope, $http) {
         $http.get('/user').then(response => {
           $scope.user = response.data;                          
+        });
+        
+        $http.get('/log').then(repsonse => {
+          $scope.logs = response.data;
         });
       }]);
     </script>
