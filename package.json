@@ -13,7 +13,9 @@
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
-    "express-session": "^1.15.5"
+    "express-session": "^1.15.5",
+    "mongo-sync": "^2.0.1",
+    "mongojs": "^2.4.1"
   },
   "engines": {
     "node": "8.x"

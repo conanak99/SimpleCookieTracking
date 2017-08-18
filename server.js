@@ -6,14 +6,15 @@ var express = require('express');
 var bodyParser = require('body-parser'); // for reading POSTed form data into `req.body`
 var expressSession = require('express-session');
 var cookieParser = require('cookie-parser'); // the session is stored in a cookie, so we use this to parse it
+var mongojs = require('mongojs');
+//var db = mongojs(connectionString, [collections]);
 
 var app = express();
 app.use(cookieParser());
-app.use(expressSession({secret:'somesecrettokenhere'}));
+app.use(expressSession({ secret:'secret-token', resave: true, saveUninitialized: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
+
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
