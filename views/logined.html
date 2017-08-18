@@ -21,7 +21,9 @@
     <main class="ui segment">
       <h1>
         Đây là log của thí chủ
-        <table class="ui single line table">
+      </h1>
+      
+      <table class="ui celled table">
   <thead>
     <tr>
       <th>Site</th>
@@ -30,14 +32,11 @@
   </thead>
   <tbody>
     <tr ng-repeat="log in logs">
-      <td>{{log.referrer}}</td>
-      <td>{{log.time}}</td>
+      <td><a ng-href="{{log.referrer}}">{{log.referrer}} </a></td>
+      <td>{{log.time | date: 'short' }}</td>
     </tr>
   </tbody>
 </table>
-      </h1>
-      
-      
     </main>
 
     <footer>
@@ -57,7 +56,7 @@
           $scope.user = response.data;                          
         });
         
-        $http.get('/log').then(repsonse => {
+        $http.get('/log').then(response => {
           $scope.logs = response.data;
         });
       }]);

@@ -86,8 +86,8 @@ app.get('/logWrite', function(request, response) {
 app.get('/log', function(request, response) {
   const userId = request.cookies.id
   db.log.find({ userId }).sort( {time: -1} , (err, docs) => {
+    let m = docs.map(doc => { return new Date(doc.time) });
     console.log(docs);
-    
     response.json(docs);
   })
 });
