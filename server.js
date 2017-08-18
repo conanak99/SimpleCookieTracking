@@ -6,8 +6,11 @@ var express = require('express');
 var bodyParser = require('body-parser'); // for reading POSTed form data into `req.body`
 var expressSession = require('express-session');
 var cookieParser = require('cookie-parser'); // the session is stored in a cookie, so we use this to parse it
+
 var mongojs = require('mongojs');
 var ObjectId = mongojs.ObjectId;
+
+var idGenerator = require('./random-id-generator');
 
 const {USERNAME, PASSWORD, DBHOST, DBPORT, DATABASE} = process.env;
 const connectionString = `mongodb://${USERNAME}:${PASSWORD}@${DBHOST}:${DBPORT}/${DATABASE}`;
@@ -23,29 +26,12 @@ app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
-  
-  
   if (!request.cookies.id) {
-    response.cookie('id', result._id, { maxAge: 30*24*3600*100 } );
-    response.redirect('/home');
+    const randomId = idGenerator.getRandomId();
+    console.log(randomId);
+    response.cookie('id', randomId , { maxAge: 30*24*3600*100 } );
   }
   response.sendFile(__dirname + '/views/index.html');
-});
-
-
-app.post("/register", function(request, response) {
-  console.log(request.body);
-  const username = request.body.username;
-  const password = request.body.password;
-  db.user.insert({username, password}, (err, result) => {    
-    response.cookie('id', result._id, { maxAge: 30*24*3600*100 } );
-    response.redirect('/home');
-  });
-});
-
-app.get('/home', function(request, response){
-  if (!request.cookies.id) response.redirect('/');
-  response.sendFile(__dirname + '/views/logined.html');
 });
 
 app.get('/logout', function(request, response) {
@@ -71,19 +57,17 @@ app.get('/logWrite', function(request, response) {
   db.log.insert(log, (err, result) => {    
     response.header('Access-Control-Allow-Origin', referrer);
     response.header('Access-Control-Allow-Credentials', 'true');
+    
     console.log(result);
     response.json(result);
   });
-  
-
 });
 
 app.get('/log', function(request, response) {
-  const userId = request.cookies.id
+  const userId = request.cookies.id;
   db.log.find({ userId }).sort( {time: -1} , (err, docs) => {
-    let m = docs.map(doc => { return new Date(doc.time) });
-    response.json(docs);
-  })
+    response.json({ id: userId, logs: docs });
+  });
 });
 
 // listen for requests :)

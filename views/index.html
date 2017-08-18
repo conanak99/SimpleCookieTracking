@@ -11,58 +11,35 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css" />
   </head>
-  <body>
+  <body ng-app="tracking" ng-controller="mainCtrl">
     <div class="ui container basic segment">
     <header>
       <h1>
-        Hello, thí chủ có muốn bị track hay không?
+        Mã số của thí chủ là {{code}}
       </h1>
     </header>
 
     <main class="ui segment">
-      <div class="ui two column divided grid">
-  <div class="row">
-    <div class="column">
       <h3>
-        Đăng nhập
+        Đây là log của thí chủ. <a href="/logout">Xoá Cookies và mọi dấu vết</a>
       </h3>
-      <div class="ui large form">
-        <form method="post" action="login">
-  <div class="two fields">
-    <div class="field">
-      <label>Username</label>
-      <input name="username" placeholder="Username" type="text" />
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <input name="password" placeholder="Last Name" type="password">
-    </div>
-  </div>
-  <button name="action" value="login" class="ui primary button">Đăng nhập</button>
-          </form>
-</div>
-    </div>
-    <div class="column">
-      <h3>Đăng ký</h3>
-      <div class="ui large form">
-        <form method="post" action="register">
-  <div class="two fields">
-    <div class="field">
-      <label>Username</label>
-      <input name="username" placeholder="Username" type="text" />
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <input name="password" placeholder="Last Name" type="password">
-    </div>
-  </div>
-  <button name="action" value="register" class="ui secondary button">Đăng ký</button>
-          </form>
-</div>
-    </div>
-  </div>
-</div>
+      
+      <table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Site</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="log in logs">
+      <td><a ng-href="{{log.referrer}}">{{log.referrer}} </a></td>
+      <td>{{log.time | date: 'short' }}</td>
+    </tr>
+  </tbody>
+</table>
     </main>
+
 
     <footer>
       <a href="https://glitch.com">
@@ -73,5 +50,19 @@
     <!-- Your web-app is https, so your scripts need to be too -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js" integrity="sha256-Bhi6GMQ/72uYZcJXCJ2LToOIcN3+Cx47AZnq/Bw1f7A=" crossorigin="anonymous"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+    
+    <script>
+      const app = angular.module('tracking', []);
+      
+      app.controller('mainCtrl', ['$scope', '$http', function($scope, $http) {
+        
+        $http.get('/log').then(response => {
+          $scope.code = response.data.id;
+          $scope.logs = response.data.logs;
+        });
+      }]);
+    </script>
   </body>
 </html>
