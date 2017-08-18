@@ -7,11 +7,12 @@ var bodyParser = require('body-parser'); // for reading POSTed form data into `r
 var expressSession = require('express-session');
 var cookieParser = require('cookie-parser'); // the session is stored in a cookie, so we use this to parse it
 var mongojs = require('mongojs');
-
 var ObjectId = mongojs.ObjectId;
-const {USERNAME, PASSWORD, DBHOST, DBPORT, DATABASE} = process.env;
 
-var db = mongojs(`mongodb://${USERNAME}:${PASSWORD}@${DBHOST}:{DBPORT}/{DATABASE}`, ['user', 'log']);
+const {USERNAME, PASSWORD, DBHOST, DBPORT, DATABASE} = process.env;
+const connectionString = `mongodb://${USERNAME}:${PASSWORD}@${DBHOST}:${DBPORT}/${DATABASE}`;
+var db = mongojs(connectionString, ['user', 'log']);
+
 
 var app = express();
 app.use(cookieParser());
@@ -76,9 +77,9 @@ app.get('/logWrite', function(request, response) {
   const log = {userId, referrer, time};
     
   db.log.insert(log, (err, result) => {    
-    console.log(result);
     response.header('Access-Control-Allow-Origin', referrer);
     response.header('Access-Control-Allow-Credentials', 'true');
+    console.log(result);
     response.json(result);
   });
   
@@ -89,7 +90,6 @@ app.get('/log', function(request, response) {
   const userId = request.cookies.id
   db.log.find({ userId }).sort( {time: -1} , (err, docs) => {
     let m = docs.map(doc => { return new Date(doc.time) });
-    console.log(docs);
     response.json(docs);
   })
 });
