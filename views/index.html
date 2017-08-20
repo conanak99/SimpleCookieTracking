@@ -10,6 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css" />
+    <style>
+      .info tr td:first-child { font-weight: bold; }
+    </style>
   </head>
   <body ng-app="tracking" ng-controller="mainCtrl">
     <div class="ui container basic segment">
@@ -21,10 +24,40 @@
 
     <main class="ui segment">
       <h3>
-        Xem thông tin của thí chủ <button></button>
+        <button class="ui button primary" ng-click="viewInfo()"> Xem thông tin của thí chủ</button>
       </h3>
       
-      <div class="ui segment" ng-if="show-info"></div>
+      <div class="ui segment" ng-if="showInfo">
+        {{info}}
+        <table class="ui collapsing compact celled table info">
+  <tbody>
+    <tr>
+      <td>IP</td>
+      <td>{{info.ip.query}}</td>
+    </tr>
+    <tr>
+      <td>Nhà cung cấp</td>
+      <td>{{info.ip.isp}}</td>
+    </tr>
+        <tr>
+      <td>Địa điểm</td>
+      <td>{{info.ip.country}} - {{info.ip.city}} - {{info.ip.regionName}}</td>
+    </tr>
+        <tr>
+      <td>Timezone</td>
+      <td>{{info.ip.timezone}}</td>
+    </tr>
+            <tr>
+      <td>Hệ điều hành</td>
+      <td>{{info.agent.os.name}} - v{{info.agent.browser.version}}</td>
+    </tr>
+            <tr>
+      <td>Browser</td>
+      <td>{{info.agent.browser.name}} - v{{info.agent.browser.version}}</td>
+    </tr>
+  </tbody>
+</table>
+      </div>
       
       
       
