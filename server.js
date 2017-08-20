@@ -26,6 +26,7 @@ app.use(express.static('public'));
 
 // Routing and cookies
 app.get("/", function (request, response) {
+  
   if (!request.cookies.id) {
     const randomId = idGenerator.getRandomId();
     console.log(randomId);
