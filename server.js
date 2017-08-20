@@ -6,6 +6,7 @@ var express = require('express');
 var bodyParser = require('body-parser'); // for reading POSTed form data into `req.body`
 var expressSession = require('express-session');
 var cookieParser = require('cookie-parser'); // the session is stored in a cookie, so we use this to parse it
+var parser = require('ua-parser-js');
 
 var mongojs = require('mongojs');
 var ObjectId = mongojs.ObjectId;
@@ -76,6 +77,16 @@ app.get('/tracking.jpg', function(request, response) {
     response.header('Access-Control-Allow-Credentials', 'true');
     response.sendFile(__dirname + '/public/track.jpg');
   });
+});
+
+app.get('/info', function(request, response) {
+    var ip = request.headers['x-forwarded-for'].split(",")[0] || 
+     request.connection.remoteAddress || 
+     request.socket.remoteAddress ||
+     request.connection.socket.remoteAddress;
+    var ua = parser(request.headers['user-agent']);
+  console.log(ip);
+  c
 });
 
 // listen for requests :)

@@ -15,7 +15,8 @@
     "express": "^4.15.3",
     "express-session": "^1.15.5",
     "mongo-sync": "^2.0.1",
-    "mongojs": "^2.4.1"
+    "mongojs": "^2.4.1",
+    "ua-parser-js": "^0.7.14"
   },
   "engines": {
     "node": "8.x"
