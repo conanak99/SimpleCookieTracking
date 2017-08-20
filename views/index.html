@@ -1,118 +1,119 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Welcome to Tracking</title>
-    <meta name="description" content="A cool thing made with Glitch">
-    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css" />
-    <style>
-      .info tr td:first-child { font-weight: bold; }
-    </style>
-  </head>
-  <body ng-app="tracking" ng-controller="mainCtrl">
-    <div class="ui container basic segment">
-    <header>
-      <h1>
-        Mã số của thí chủ là {{code}}
-      </h1>
-    </header>
-
-    <main class="ui segment">
-      <h3>
-        <button class="ui button primary" ng-click="viewInfo()"> Xem thông tin của thí chủ</button>
-      </h3>
-      
-      <div class="ui segment" ng-if="showInfo">
-        {{info}}
-        <table class="ui collapsing compact celled table info">
-  <tbody>
-    <tr>
-      <td>IP</td>
-      <td>{{info.ip.query}}</td>
-    </tr>
-    <tr>
-      <td>Nhà cung cấp</td>
-      <td>{{info.ip.isp}}</td>
-    </tr>
-        <tr>
-      <td>Địa điểm</td>
-      <td>{{info.ip.country}} - {{info.ip.city}} - {{info.ip.regionName}}</td>
-    </tr>
-        <tr>
-      <td>Timezone</td>
-      <td>{{info.ip.timezone}}</td>
-    </tr>
-            <tr>
-      <td>Hệ điều hành</td>
-      <td>{{info.agent.os.name}} - v{{info.agent.browser.version}}</td>
-    </tr>
-            <tr>
-      <td>Browser</td>
-      <td>{{info.agent.browser.name}} - v{{info.agent.browser.version}}</td>
-    </tr>
-  </tbody>
-</table>
+   <head>
+      <title>Welcome to Tracking</title>
+      <meta name="description" content="A cool thing made with Glitch">
+      <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css" />
+      <style>
+         .info tr td:first-child { font-weight: bold; }
+      </style>
+   </head>
+   <body ng-app="tracking" ng-controller="mainCtrl">
+      <div class="ui container basic segment">
+         <header>
+            <h1>
+               Mã số của thí chủ là {{code}}
+            </h1>
+         </header>
+         <main class="ui segment">
+            <h3>
+               <button class="ui button primary" ng-click="viewInfo()"> Xem thông tin của thí chủ</button>
+            </h3>
+            <table class="ui collapsing compact celled table info" ng-if="showInfo">
+               <tbody>
+                  <tr>
+                     <td>IP</td>
+                     <td>{{info.ip.query}}</td>
+                  </tr>
+                  <tr>
+                     <td>Nhà cung cấp</td>
+                     <td>{{info.ip.isp}}</td>
+                  </tr>
+                  <tr>
+                     <td>Địa điểm</td>
+                     <td>{{info.ip.country}} - {{info.ip.city}} - {{info.ip.regionName}}</td>
+                  </tr>
+                  <tr>
+                     <td>Timezone</td>
+                     <td>{{info.ip.timezone}}</td>
+                  </tr>
+                  <tr>
+                     <td>Hệ điều hành</td>
+                     <td>{{info.agent.os.name}} - v{{info.agent.os.version}}</td>
+                  </tr>
+                  <tr>
+                     <td>Browser</td>
+                     <td>{{info.agent.browser.name}} - v{{info.agent.browser.version}}</td>
+                  </tr>
+                  <tr>
+                     <td>Độ phân giải</td>
+                     <td>{{screen.width}} x {{screen.height}}</td>
+                  </tr>
+               </tbody>
+            </table>
+           
+           <h3>
+             Script tracking đã được cài đặt ở những trang sau
+           </h3>
+           
+           <ul>
+             <li><a href="http://hoclaptrinh.toidicodedao.com" target="_blank">http://hoclaptrinh.toidicodedao.com</a></li>
+             <li><a href="http://security.toidicodedao.com" target="_blank">http://security.toidicodedao.com</a></li>
+             <li><a href="http://jav-idol.toidicodedao.com/" target="_blank">http://jav-idol.toidicodedao.com</a></li>
+             <li><a href="https://toidicodedao.com" target="_blank">http://hoclaptrinh.toidicodedao.com</a></li>
+           </ul>
+           
+            <h3>
+               Đây là log của thí chủ. <a href="/logout">Xoá Cookies và mọi dấu vết</a>
+            </h3>
+            <table class="ui celled table">
+               <thead>
+                  <tr>
+                     <th>Site</th>
+                     <th>Time</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr ng-repeat="log in logs">
+                     <td><a ng-href="{{log.referrer}}">{{log.referrer}} </a></td>
+                     <td>{{log.time | date: 'short' }}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </main>
+         <footer>
+            <a href="https://glitch.com">
+            Remix this in Glitch
+            </a>
+         </footer>
       </div>
-      
-      
-      
-      <h3>
-        Đây là log của thí chủ. <a href="/logout">Xoá Cookies và mọi dấu vết</a>
-      </h3>
-      
-      <table class="ui celled table">
-  <thead>
-    <tr>
-      <th>Site</th>
-      <th>Time</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="log in logs">
-      <td><a ng-href="{{log.referrer}}">{{log.referrer}} </a></td>
-      <td>{{log.time | date: 'short' }}</td>
-    </tr>
-  </tbody>
-</table>
-    </main>
-
-
-    <footer>
-      <a href="https://glitch.com">
-        Remix this in Glitch
-      </a>
-    </footer>
-</div>
-    <!-- Your web-app is https, so your scripts need to be too -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js" integrity="sha256-Bhi6GMQ/72uYZcJXCJ2LToOIcN3+Cx47AZnq/Bw1f7A=" crossorigin="anonymous"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
-    
-    <script>
-      const app = angular.module('tracking', []);
-      
-      app.controller('mainCtrl', ['$scope', '$http', function($scope, $http) {
-        $scope.showInfo = false;
-        
-        $http.get('/log').then(response => {
-          $scope.code = response.data.id;
-          $scope.logs = response.data.logs;
-        });
-        
-        $scope.viewInfo = function() {
-          $http.get('/info').then(response => {
-            $scope.showInfo = true;
-            $scope.info = response.data;
-          });
-        }
-
-      }]);
-    </script>
-  </body>
+      <!-- Your web-app is https, so your scripts need to be too -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js" integrity="sha256-Bhi6GMQ/72uYZcJXCJ2LToOIcN3+Cx47AZnq/Bw1f7A=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+      <script>
+         const app = angular.module('tracking', []);
+         
+         app.controller('mainCtrl', ['$scope', '$http', '$window', function($scope, $http, $window) {
+           $scope.showInfo = false;
+           
+           $http.get('/log').then(response => {
+             $scope.code = response.data.id;
+             $scope.logs = response.data.logs;
+           });
+           
+           $scope.viewInfo = function() {
+             $http.get('/info').then(response => {
+               $scope.showInfo = true;
+               $scope.info = response.data;
+               $scope.screen = $window.screen;
+             });
+           }
+         }]);
+      </script>
+   </body>
 </html>

