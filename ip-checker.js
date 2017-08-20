@@ -2,7 +2,7 @@ var rp = require('request-promise');
 
 class IPChecker {
   constructor() {
-    this.cache = {}
+    this.cache = {};
   }
   
   getInfoFromIp(ip) {
@@ -12,7 +12,8 @@ class IPChecker {
       return Promise.resolve(cachedResult);
     } 
     
-    return rp('http://ip-api.com/json/' + ip).then(result => {
+    return rp({ uri: 'http://ip-api.com/json/' + ip, json: true }).then(result => {
+      console.log('Find ip from api: ' + ip);
       this.cache[ip] = result;
       return result;
     });
@@ -20,4 +21,4 @@ class IPChecker {
   
 }
 
-module.export = new IPChecker();
+module.exports = new IPChecker();

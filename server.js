@@ -86,12 +86,13 @@ app.get('/info', function(request, response) {
      request.socket.remoteAddress ||
      request.connection.socket.remoteAddress;
   
-  ipChecker.getInfoFromIp(ip).then(resul
-  
-  var ua = parser(request.headers['user-agent']);
-  console.log(ip);
-  console.log(ua);
-  response.json(ua);
+  ipChecker.getInfoFromIp(ip).then(result => {
+    var ua = parser(request.headers['user-agent']);
+    response.json({
+      ip: result,
+      agent: ua
+    });
+  })
 });
 
 // listen for requests :)

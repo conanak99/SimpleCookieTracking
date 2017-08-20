@@ -21,6 +21,12 @@
 
     <main class="ui segment">
       <h3>
+        Đây là thông tin về thí chủ
+      </h3>
+      
+      
+      
+      <h3>
         Đây là log của thí chủ. <a href="/logout">Xoá Cookies và mọi dấu vết</a>
       </h3>
       
@@ -62,6 +68,13 @@
           $scope.code = response.data.id;
           $scope.logs = response.data.logs;
         });
+        
+        $scope.viewInfo = function() {
+          $http.get('/info').then(response => {
+            $scope.info = response.data;
+          });
+        }
+
       }]);
     </script>
   </body>
