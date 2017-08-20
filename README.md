@@ -12,9 +12,6 @@ Run the Project
 5. Edit file ```public/track.js```, change the url to your application url. The tracking script can be included with the url ```httt://{yourUrl}/track.js```
 6. The tracking image can be accessed at ```http://{yourUrl}/tracking.jpg```
 
-You have been tracked (maybe) by this image
-![Track Image](https://sleepy-fuel.glitch.me/tracking.jpg "Track Image")
-
 Made by [Tôi Đi Code Dạo](https://toidicodedao.com/)
 -------------------
 \ ゜o゜)ノ
