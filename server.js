@@ -51,7 +51,12 @@ app.get('/log', function(request, response) {
 
 // Tracking API
 app.get('/logWrite', function(request, response) {
-  const userId = request.cookies.id || 'Unknown';
+  // Do not log unknown user
+  if (!request.cookies.id) {
+    response.json({});
+  }
+  
+  const userId = request.cookies.id;
   const referrer = request.header('Referer').replace(/\/$/, "");;
   const time = new Date();
   
@@ -67,15 +72,17 @@ app.get('/logWrite', function(request, response) {
 });
 
 app.get('/tracking.jpg', function(request, response) {
-  const userId = request.cookies.id || 'Unknown';
+    // Do not send image to unknow users, save bandwidth
+  if (!request.cookies.id) {
+    response.end();
+  }
+  
+  const userId = request.cookies.id;
   const referrer = (request.header('Referer') || 'Empty').replace(/\/$/, "");;
   const time = new Date();
   
-  const log = {userId, referrer, time};
-    
+  const log = { userId, referrer, time };
   db.log.insert(log, (err, result) => {    
-    response.header('Access-Control-Allow-Origin', referrer);
-    response.header('Access-Control-Allow-Credentials', 'true');
     response.sendFile(__dirname + '/public/track.jpg');
   });
 });
@@ -87,11 +94,8 @@ app.get('/info', function(request, response) {
      request.connection.socket.remoteAddress;
   
   ipChecker.getInfoFromIp(ip).then(result => {
-    var ua = parser(request.headers['user-agent']);
-    response.json({
-      ip: result,
-      agent: ua
-    });
+    var agent = parser(request.headers['user-agent']);
+    response.json({ ip: result, agent });
   })
 });
 
