@@ -12,6 +12,7 @@ var mongojs = require('mongojs');
 var ObjectId = mongojs.ObjectId;
 
 var idGenerator = require('./random-id-generator');
+var ipChecker = require('./ip-checker');
 
 const {USERNAME, PASSWORD, DBHOST, DBPORT, DATABASE} = process.env;
 const connectionString = `mongodb://${USERNAME}:${PASSWORD}@${DBHOST}:${DBPORT}/${DATABASE}`;
@@ -80,13 +81,17 @@ app.get('/tracking.jpg', function(request, response) {
 });
 
 app.get('/info', function(request, response) {
-    var ip = request.headers['x-forwarded-for'].split(",")[0] || 
+  var ip = request.headers['x-forwarded-for'].split(",")[0] || 
      request.connection.remoteAddress || 
      request.socket.remoteAddress ||
      request.connection.socket.remoteAddress;
-    var ua = parser(request.headers['user-agent']);
+  
+  ipChecker.getInfoFromIp(ip).then(resul
+  
+  var ua = parser(request.headers['user-agent']);
   console.log(ip);
-  c
+  console.log(ua);
+  response.json(ua);
 });
 
 // listen for requests :)

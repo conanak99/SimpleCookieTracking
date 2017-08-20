@@ -16,6 +16,8 @@
     "express-session": "^1.15.5",
     "mongo-sync": "^2.0.1",
     "mongojs": "^2.4.1",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
     "ua-parser-js": "^0.7.14"
   },
   "engines": {
